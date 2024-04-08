@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+  height: 100%;
+}
+
+.desktop-header {
+  display: none;
+}
+
+.mobile-bottom-nav {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .desktop-header {
+    display: block;
+  }
+
+  .mobile-bottom-nav {
+    display: none;
+  }
+}
