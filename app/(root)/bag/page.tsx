@@ -48,15 +48,18 @@ const Cart = () => {
           state,
           cartProducts: cart.cartItems,
         }),
-      });
-
-      if (response.ok) {
-        // Handle successful order placement
-        router.push("/payment_success");
-      } else {
-        // Handle error response
-        router.push("/payment_failed");
-      }
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Extract WhatsApp link from the response
+          const { whatsappLink } = data;
+          // Redirect to WhatsApp link
+          window.location.href = whatsappLink;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle error
+        });
     } catch (error) {
       console.error("Error Generating Quotation order:", error);
     }
