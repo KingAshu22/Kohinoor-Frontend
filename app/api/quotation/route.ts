@@ -4,6 +4,66 @@ import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
+import { create } from 'venom-bot';
+
+// const initializeWhatsAppClient = async () => {
+//     try {
+//         const client = await create(
+//             'sessionName',
+//             (base64Qr, asciiQR, attempts, urlCode) => {
+//                 console.log(asciiQR); // Optional to log the QR in the terminal
+//                 var matches = base64Qr.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+//                     response = {};
+
+//                 if (matches.length !== 3) {
+//                     return new Error('Invalid input string');
+//                 }
+//                 response.type = matches[1];
+//                 response.data = new Buffer.from(matches[2], 'base64');
+
+//                 var imageBuffer = response;
+//                 require('fs').writeFile(
+//                     'out.png',
+//                     imageBuffer['data'],
+//                     'binary',
+//                     function (err) {
+//                         if (err != null) {
+//                             console.log(err);
+//                         }
+//                     }
+//                 );
+//             },
+//             undefined,
+//             { logQR: false }
+//         )
+
+//         client.onMessage(async (message) => {
+//             console.log('Received message:', message.body);
+//         });
+
+//         return client;
+//     } catch (error) {
+//         console.error('Error initializing WhatsApp client:', error);
+//         return null;
+//     }
+// };
+
+// const client = await initializeWhatsAppClient();
+
+// const sendWhatsAppMessage = async (to: string, message: string) => {
+//     try {
+//         if (!client) {
+//             console.error('WhatsApp client is not initialized.');
+//             return;
+//         }
+
+//         await client.sendText(to, message);
+//         console.log('Message sent successfully.');
+//     } catch (error) {
+//         console.error('Error sending WhatsApp message:', error);
+//     }
+// };
+
 
 interface CartProduct {
     item: {
@@ -32,12 +92,12 @@ export const POST = async (req: NextRequest) => {
             streetAddress,
             city,
             postalCode,
-            country,
+            state,
             cartProducts,
         } = await req.json();
 
         // Data validation
-        if (!amount || !name || !email || !mobile || !streetAddress || !city || !postalCode || !country || !cartProducts) {
+        if (!amount || !name || !email || !mobile || !streetAddress || !city || !postalCode || !state || !cartProducts) {
             return new NextResponse("Missing required fields", { status: 400 });
         }
 
@@ -82,22 +142,27 @@ export const POST = async (req: NextRequest) => {
             shippingAddress: {
                 street: streetAddress,
                 city: city,
-                state: '',
+                state: state,
                 postalCode: postalCode,
-                country: country,
             },
             totalAmount: amount,
-            paymentMode: "COD" // Change payment mode to "COD"
         });
 
         // Associate order with customer
         customer.orders.push(order._id);
         await customer.save();
 
+        // // Send WhatsApp message with order details
+        // const message = `New quotation created:\nOrder ID: ${order._id}\nTotal Amount: ${amount}\nShipping Address: ${streetAddress}, ${city}, ${state}, ${postalCode}`;
+        // await sendWhatsAppMessage(`${mobile}@c.us`, message);
+        // await sendWhatsAppMessage("+918104461820@c.us", message);
+
         return new NextResponse(JSON.stringify({
             orderId: order._id,
             message: "Order placed successfully.",
         }), { status: 200 });
+
+
     } catch (error) {
         console.error('Error creating order:', error);
         return new NextResponse("Failed to create order", { status: 400 });

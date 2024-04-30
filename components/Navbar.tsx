@@ -20,8 +20,7 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-10 py-2 px-10 flex gap-2 justify-between items-center bg-white max-sm:px-2">
       <Link href="/" className="text-heading3-bold">
-        Kohinoor Flags
-        {/* <Image src="/logo.png" alt="logo" width={130} height={100} /> */}
+        <Image src="/Kohinoor_Logo.png" alt="logo" width={130} height={100} />
       </Link>
 
       <div className="flex gap-4 text-base-bold max-lg:hidden">

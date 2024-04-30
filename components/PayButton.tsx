@@ -14,7 +14,6 @@ export default function PayButton({
   amount,
   name,
   user,
-  email,
   mobile,
   streetAddress,
   city,
@@ -24,7 +23,6 @@ export default function PayButton({
   amount: number;
   name: string;
   user: any; // Adjust the type accordingly
-  email: string;
   mobile: string;
   streetAddress: string;
   city: string;
@@ -68,7 +66,6 @@ export default function PayButton({
         body: JSON.stringify({
           amount,
           name,
-          email,
           mobile,
           streetAddress,
           city,
@@ -98,7 +95,6 @@ export default function PayButton({
         },
         prefill: {
           name,
-          email,
           contact: mobile,
         },
         theme: {

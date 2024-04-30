@@ -17,11 +17,9 @@ const Cart = () => {
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
 
   const clerkId = user?.id;
-
-  const email = user?.emailAddresses[0].emailAddress;
   const name = user?.fullName;
   const mobile = user?.phoneNumbers[0].phoneNumber;
 
@@ -33,22 +31,21 @@ const Cart = () => {
   );
   const totalRounded = parseFloat(total.toFixed(2));
 
-  const placeCODOrder = async () => {
+  const generateQuotation = async () => {
     try {
-      const response = await fetch("/api/cod", {
+      const response = await fetch("/api/quotation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: totalRounded + 200, // Adjust the amount as needed
+          amount: totalRounded,
           name,
-          email,
           mobile,
           streetAddress,
           city,
           postalCode,
-          country,
+          state,
           cartProducts: cart.cartItems,
         }),
       });
@@ -61,7 +58,7 @@ const Cart = () => {
         router.push("/payment_failed");
       }
     } catch (error) {
-      console.error("Error placing COD order:", error);
+      console.error("Error Generating Quotation order:", error);
     }
   };
 
@@ -110,7 +107,7 @@ const Cart = () => {
                       className="hover:text-red-1 cursor-pointer"
                       onClick={() => cart.decreaseQuantity(cartItem.item._id)}
                     />
-                    <p className="text-body-bold">{cartItem.quantity}</p>
+                    <p className="text-body-bold">{cartItem.quantity} Gross</p>
                     <PlusCircle
                       className="hover:text-red-1 cursor-pointer"
                       onClick={() => cart.increaseQuantity(cartItem.item._id)}
@@ -134,27 +131,31 @@ const Cart = () => {
                 placeholder="Street Address"
                 value={streetAddress}
                 onChange={(ev) => setStreetAddress(ev.target.value)}
+                required
                 className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
               />
               <input
                 type="text"
                 placeholder="City"
                 value={city}
+                required
                 onChange={(ev) => setCity(ev.target.value)}
+                className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <input
+                type="text"
+                placeholder="State"
+                value={state}
+                required
+                onChange={(ev) => setState(ev.target.value)}
                 className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
               />
               <input
                 type="text"
                 placeholder="Postal Code"
                 value={postalCode}
+                required
                 onChange={(ev) => setPostalCode(ev.target.value)}
-                className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
-              />
-              <input
-                type="text"
-                placeholder="Country"
-                value={country}
-                onChange={(ev) => setCountry(ev.target.value)}
                 className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
               />
             </div>
@@ -165,37 +166,20 @@ const Cart = () => {
               })`}</span>
             </p>
             <div className="flex justify-between text-body-semibold">
-              <span>Sub Total</span>
+              <span>Total</span>
               <span>₹ {totalRounded}</span>
             </div>
-            <div className="flex justify-between text-body-semibold">
-              <span>Delivery</span>
-              <span>₹ 100</span>
-            </div>
             <div className="flex justify-between">
-              <span>Note: ₹ 100 will be charged extra for COD Orders</span>
+              <span>
+                Note: Recipient covers delivery charges upon receiving shipment.
+              </span>
             </div>
             <hr />
-            <div className="flex justify-between text-body-semibold">
-              <span>Total</span>
-              <span>₹ {totalRounded + 100}</span>
-            </div>
-            <PayButton
-              amount={totalRounded + parseInt("100")}
-              name={name || ""} // Ensure name is a string or default to an empty string
-              email={email || ""}
-              user={user}
-              mobile={mobile || ""}
-              streetAddress={streetAddress || ""}
-              city={city || ""}
-              postalCode={postalCode || ""}
-              country={country || ""}
-            />
             <button
-              className="border rounded-lg text-body-bold text-black bg-green-600 py-3 w-full hover:bg-white hover:text-black"
-              onClick={placeCODOrder}
+              className="border rounded-lg text-body-bold text-white bg-black py-3 w-full hover:bg-white hover:text-black"
+              onClick={generateQuotation}
             >
-              Cash On Delivery
+              Generate Quotation
             </button>
           </div>
         </div>

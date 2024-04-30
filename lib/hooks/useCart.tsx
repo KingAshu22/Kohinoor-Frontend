@@ -46,7 +46,7 @@ const useCart = create(
       increaseQuantity: (idToIncrease: String) => {
         const newCartItems = get().cartItems.map((cartItem) =>
           cartItem.item._id === idToIncrease
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + 2 }
             : cartItem
         );
         set({ cartItems: newCartItems });
@@ -56,12 +56,12 @@ const useCart = create(
         const currentItems = get().cartItems;
         const updatedItems = currentItems.map((cartItem) => {
           if (cartItem.item._id === idToDecrease) {
-            if (cartItem.quantity === 1) {
-              // Remove the item from the cart if quantity is 1
+            if (cartItem.quantity === 10) {
+              // Remove the item from the cart if quantity is 10
               return null;
             } else {
-              // Decrease the quantity by 1
-              return { ...cartItem, quantity: cartItem.quantity - 1 };
+              // Decrease the quantity by 2
+              return { ...cartItem, quantity: cartItem.quantity - 2 };
             }
           }
           return cartItem;

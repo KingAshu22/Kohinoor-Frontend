@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { UserButton, useUser } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -62,16 +63,21 @@ export default function BottomNav() {
           </div>
         </nav>
       </div>
-      <header className="bg-gray-800 sticky top-0 z-50">
+      <header className="bg-white-800 sticky top-0 z-50">
         <div className="flex justify-between items-center py-4 px-8">
           <Link
             href="/"
             className="text-white text-lg font-bold -ml-5"
             passHref
           >
-            Kohinoor Flags
+            <Image
+              src="/Kohinoor_Logo.png"
+              alt="logo"
+              width={130}
+              height={100}
+            />
           </Link>
-          <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-lg">
+          {/* <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-lg">
             <input
               className="outline-none max-sm:max-w-[120px] bg-transparent"
               placeholder="Search..."
@@ -84,7 +90,7 @@ export default function BottomNav() {
             >
               <Search className="text-white cursor-pointer h-4 w-4 hover:text-red-1" />
             </button>
-          </div>
+          </div> */}
           <div className="flex items-center">
             {user ? (
               <UserButton afterSignOutUrl="/sign-in" />

@@ -13,7 +13,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
   const [selectedSize, setSelectedSize] = useState<string>(
     productInfo.sizes[0]
   );
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(10);
 
   const cart = useCart();
 
@@ -29,7 +29,14 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         <p className="text-base-bold">{productInfo.category}</p>
       </div>
 
-      <p className="text-heading3-bold">₹ {productInfo.price}</p>
+      <p className="text-heading3-bold">
+        ₹ {productInfo.price} <span className="text-base-medium">/ Gross</span>
+      </p>
+
+      <div className="flex flex-col gap-2">
+        <p className="text-small-medium">1 Gross = 12 Dozens</p>
+        <p className="text-small-medium">1 Dozen = 12 Pieces</p>
+      </div>
 
       <div className="flex flex-col gap-2">
         <p className="text-base-medium text-grey-2">Description:</p>
@@ -79,12 +86,12 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         <div className="flex gap-4 items-center">
           <MinusCircle
             className="hover:text-red-1 cursor-pointer"
-            onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+            onClick={() => quantity > 10 && setQuantity(quantity - 2)}
           />
-          <p className="text-body-bold">{quantity}</p>
+          <p className="text-body-bold">{quantity} Gross</p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"
-            onClick={() => setQuantity(quantity + 1)}
+            onClick={() => setQuantity(quantity + 2)}
           />
         </div>
       </div>

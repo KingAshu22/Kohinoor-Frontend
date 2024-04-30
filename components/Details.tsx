@@ -1,7 +1,15 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { Truck, ShieldCheck, Wallet, Phone, Box } from "lucide-react";
+import {
+  Truck,
+  ShieldCheck,
+  Wallet,
+  Phone,
+  Box,
+  ThumbsUp,
+  MapPin,
+} from "lucide-react";
 
 interface DetailItemProps {
   icon: ReactNode;
@@ -38,11 +46,11 @@ const DetailItem = ({ icon, text }: DetailItemProps) => (
 const Details = () => {
   return (
     <Container>
-      <DetailItem icon={<Truck />} text="Free Shipping" />
-      <DetailItem icon={<Wallet />} text="Cash On Delivery" />
-      <DetailItem icon={<ShieldCheck />} text="Secured Payments" />
-      <DetailItem icon={<Phone />} text="Easy Support" />
-      <DetailItem icon={<Box />} text="Easy Returns" />
+      <DetailItem icon={<Truck />} text="Express Shipping" />
+      <DetailItem icon={<ShieldCheck />} text="Secure Packaging" />
+      <DetailItem icon={<ThumbsUp />} text="Quality Assuarance" />
+      <DetailItem icon={<Phone />} text="Dedicated Support" />
+      <DetailItem icon={<MapPin />} text="Nationwide Coverage" />
     </Container>
   );
 };

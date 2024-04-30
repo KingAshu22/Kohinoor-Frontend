@@ -44,7 +44,6 @@ const ProductDetails = async ({
         />
       </div>
       <Details />
-      <Footer />
     </>
   );
 };
