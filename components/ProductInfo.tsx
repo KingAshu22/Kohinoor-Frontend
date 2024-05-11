@@ -35,7 +35,6 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
 
       <div className="flex flex-col gap-2">
         <p className="text-small-medium">1 Gross = 12 Dozens</p>
-        <p className="text-small-medium">1 Dozen = 12 Pieces</p>
       </div>
 
       <div className="flex flex-col gap-2">

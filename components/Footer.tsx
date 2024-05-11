@@ -9,7 +9,7 @@ const Footer = () => {
         <div>
           <h4 className="font-bold mb-4">Information</h4>
           <a
-            href="tel:9876543210"
+            href="tel:+917977481302"
             className="text-gray-600 hover:underline block mb-2"
           >
             Talk To Us
