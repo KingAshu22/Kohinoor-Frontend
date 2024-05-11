@@ -1,10 +1,10 @@
 import { getOrders } from "@/lib/actions/actions";
 
-import { auth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 
 const Orders = async () => {
-  const { userId } = auth();
+  const { userId } = useAuth();
   const orders = await getOrders(userId as string);
   interface OrderType {
     _id: string;
@@ -58,7 +58,7 @@ const Orders = async () => {
                     alt={orderItem.product.title}
                     width={100}
                     height={100}
-                    className="w-32 h-32 object-cover rounded-lg"
+                    className="w-32 h-32 object-cover rounded-xl"
                   />
                   <div className="flex flex-col justify-between">
                     <p className="text-small-medium">

@@ -3,7 +3,7 @@ import Customer from "@/lib/models/Customer";
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import shortid from "shortid";
 import Razorpay from "razorpay";
@@ -19,7 +19,7 @@ interface CartProduct {
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { userId } = auth();
+        const { userId } = useAuth();
 
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });

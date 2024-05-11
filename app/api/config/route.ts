@@ -1,9 +1,9 @@
-import { auth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
     try {
-        const { userId } = auth();
+        const { userId } = useAuth();
 
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });

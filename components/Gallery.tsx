@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import React, { useState } from "react";
@@ -13,7 +13,7 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
         width={500}
         height={500}
         alt="product"
-        className="w-96 h-96 rounded-lg shadow-xl object-cover"
+        className="w-96 h-96 rounded-xl shadow-xl object-cover"
       />
       <div className="flex gap-2 overflow-auto tailwind-scrollbar-hide">
         {productMedia.map((image, index) => (
@@ -23,7 +23,9 @@ const Gallery = ({ productMedia }: { productMedia: string[] }) => {
             height={200}
             width={200}
             alt="product"
-            className={`w-20 h-20 rounded-lg object-cover cursor-pointer ${mainImage === image ? "border-2 border-black" : ""}`}
+            className={`w-20 h-20 rounded-xl object-cover cursor-pointer ${
+              mainImage === image ? "border-2 border-black" : ""
+            }`}
             onClick={() => setMainImage(image)}
           />
         ))}

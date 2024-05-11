@@ -1,13 +1,13 @@
 import User from "@/lib/models/User";
 import { connectToDB } from "@/lib/mongoDB";
 
-import { auth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { userId } = auth()
+    const { userId } = useAuth()
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 })
@@ -38,7 +38,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     await user.save()
-    
+
     return NextResponse.json(user, { status: 200 })
   } catch (err) {
     console.log("[wishlist_POST]", err);

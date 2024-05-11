@@ -53,7 +53,7 @@ export default function BottomNav() {
                 href={path}
                 key={path}
                 className={`flex flex-col items-center justify-center text-white py-2 ${
-                  pathname === path ? "bg-red-500 px-4 rounded-lg" : ""
+                  pathname === path ? "bg-red-500 px-4 rounded-xl" : ""
                 }`}
               >
                 {icon}
@@ -77,7 +77,7 @@ export default function BottomNav() {
               height={100}
             />
           </Link>
-          {/* <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-lg">
+          {/* <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-xl">
             <input
               className="outline-none max-sm:max-w-[120px] bg-transparent"
               placeholder="Search..."

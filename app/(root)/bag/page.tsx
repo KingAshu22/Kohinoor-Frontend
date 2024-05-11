@@ -1,14 +1,12 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import PayButton from "@/components/PayButton";
-import useCart from "@/lib/hooks/useCart";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
-
-import { MinusCircle, PlusCircle, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { MinusCircle, PlusCircle, Trash } from "lucide-react";
+import useCart from "@/lib/hooks/useCart";
 
 const Cart = () => {
   const router = useRouter();
@@ -18,6 +16,8 @@ const Cart = () => {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [state, setState] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
 
   const clerkId = user?.id;
   const name = user?.fullName;
@@ -25,13 +25,41 @@ const Cart = () => {
 
   const cart = useCart();
 
-  const total = cart.cartItems.reduce(
+  const subtotal = cart.cartItems.reduce(
     (acc, cartItem) => acc + cartItem.item.price * cartItem.quantity,
     0
   );
-  const totalRounded = parseFloat(total.toFixed(2));
+  const totalRounded = parseFloat(subtotal.toFixed(2));
+
+  useEffect(() => {
+    let discount = 0;
+    let discountPercent = 0;
+
+    if (totalRounded > 100000) {
+      discountPercent = 18;
+      discount = (totalRounded * 18) / 100;
+    } else if (totalRounded > 50000) {
+      discountPercent = 15;
+      discount = (totalRounded * 15) / 100;
+    } else if (totalRounded > 10000) {
+      discountPercent = 10;
+      discount = (totalRounded * 10) / 100;
+    }
+
+    setDiscountPercent(discountPercent);
+    setDiscount(discount);
+  }, [totalRounded]);
+
+  const total = totalRounded - discount;
 
   const generateQuotation = async () => {
+    if (!streetAddress || !city || !state || !postalCode) {
+      toast.error(
+        "Please fill all address fields before generating quotation."
+      );
+      return;
+    }
+
     try {
       const response = await fetch("/api/quotation", {
         method: "POST",
@@ -39,7 +67,7 @@ const Cart = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: totalRounded,
+          amount: total,
           name,
           mobile,
           streetAddress,
@@ -48,20 +76,14 @@ const Cart = () => {
           state,
           cartProducts: cart.cartItems,
         }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // Extract WhatsApp link from the response
-          const { whatsappLink } = data;
-          // Redirect to WhatsApp link
-          window.location.href = whatsappLink;
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          // Handle error
-        });
+      });
+
+      const data = await response.json();
+      const { whatsappLink } = data;
+      window.location.href = whatsappLink;
     } catch (error) {
       console.error("Error Generating Quotation order:", error);
+      toast.error("Error generating quotation. Please try again later.");
     }
   };
 
@@ -82,13 +104,16 @@ const Cart = () => {
             <hr className="my-6" />
             <div>
               {cart.cartItems.map((cartItem) => (
-                <div className="w-full flex max-sm:flex-col max-sm:gap-3 hover:bg-grey-1 px-4 py-3 items-center max-sm:items-start justify-between">
+                <div
+                  key={cartItem.item._id}
+                  className="w-full flex max-sm:flex-col max-sm:gap-3 hover:bg-grey-1 px-4 py-3 items-center max-sm:items-start justify-between"
+                >
                   <div className="flex items-center">
                     <Image
                       src={cartItem.item.media[0]}
                       width={100}
                       height={100}
-                      className="rounded-lg w-32 h-32 object-cover"
+                      className="rounded-xl w-32 h-32 object-cover"
                       alt="product"
                     />
                     <div className="flex flex-col gap-3 ml-4">
@@ -126,7 +151,7 @@ const Cart = () => {
             </div>
           </div>
 
-          <div className="w-1/3 max-lg:w-full flex flex-col gap-8 bg-grey-1 rounded-lg px-4 py-5">
+          <div className="w-1/3 max-lg:w-full flex flex-col gap-8 bg-grey-1 rounded-xl px-4 py-5">
             <div className="pb-4">
               <p className="text-heading4-bold">Address</p>
               <input
@@ -169,8 +194,19 @@ const Cart = () => {
               })`}</span>
             </p>
             <div className="flex justify-between text-body-semibold">
-              <span>Total</span>
-              <span>₹ {totalRounded}</span>
+              <span>Subtotal</span>
+              <span>₹ {totalRounded.toFixed(2)}</span>
+            </div>
+            {discount > 0 && (
+              <div className="flex justify-between text-body-semibold">
+                <span>Discount ({discountPercent}%)</span>
+                <span>- ₹ {discount.toFixed(2)}</span>
+              </div>
+            )}
+            <hr />
+            <div className="flex justify-between text-body-semibold">
+              <span className="font-bold">Total</span>
+              <span className="font-bold">₹ {total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>
@@ -179,7 +215,7 @@ const Cart = () => {
             </div>
             <hr />
             <button
-              className="border rounded-lg text-body-bold text-white bg-black py-3 w-full hover:bg-white hover:text-black"
+              className="border rounded-xl text-body-bold text-white bg-black py-3 w-full hover:bg-white hover:text-black"
               onClick={generateQuotation}
             >
               Generate Quotation

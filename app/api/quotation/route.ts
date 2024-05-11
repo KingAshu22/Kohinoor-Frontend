@@ -2,7 +2,7 @@ import Customer from "@/lib/models/Customer";
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 interface CartProduct {
@@ -16,7 +16,7 @@ interface CartProduct {
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { userId } = auth();
+        const { userId } = getAuth(req);
 
         // if (!userId) {
         //     return new NextResponse("Unauthorized", { status: 401 });
@@ -59,17 +59,25 @@ export const POST = async (req: NextRequest) => {
 
         // Prepare line items
         let line_items = [];
+        let orderDetails = '';
+        let count = 1;
+        let price = 0;
         for (const cartProduct of cartProducts) {
             const productInfo = productsInfos.find(p => p._id.toString() === cartProduct.item._id);
             const quantity = cartProduct.quantity;
 
             if (productInfo && quantity > 0) {
+                const totalPrice = quantity * productInfo.price;
                 line_items.push({
                     product: productInfo._id,
                     color: cartProduct.color,
                     size: cartProduct.size,
                     quantity: cartProduct.quantity,
                 });
+
+                orderDetails += `${count}. *${productInfo.title}* - ₹${productInfo.price} x ${quantity} = ₹${totalPrice}\r\n`;
+                price += totalPrice;
+                count++;
             }
         }
 
@@ -91,7 +99,19 @@ export const POST = async (req: NextRequest) => {
         await customer.save();
 
         // Generate WhatsApp link with predefined message
-        const whatsappMessage = encodeURIComponent(`Hello, I am ${name} & I placed an order on your website.`);
+        const formattedOrderDetails = orderDetails.trim();
+        const whatsappMessage = encodeURIComponent(
+            `Order Details:\r\n\r\n` +
+            `Name: *${name}* \r\n` +
+            `Mobile: *${mobile}* \r\n` +
+            `Address: *${streetAddress}, ${city}, ${state}, ${postalCode}* \r\n\r\n` +
+            `Order Details:\n${formattedOrderDetails}\r\n\r\n` +
+            `--------------------------\r\n` +
+            `Subtotal: ₹${price.toFixed(2)}\r\n` +
+            `Discount: ₹${(price - amount).toFixed(2)}\r\n` +
+            `--------------------------\r\n` +
+            `*Total: ₹${amount.toFixed(2)}*`
+        );
         const whatsappLink = `https://api.whatsapp.com/send?phone=917709041087&text=${whatsappMessage}`;
 
         // Redirect the user to the WhatsApp link

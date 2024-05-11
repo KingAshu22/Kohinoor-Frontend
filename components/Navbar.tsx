@@ -48,7 +48,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-lg">
+      <div className="flex gap-3 border border-grey-2 px-3 py-1 items-center rounded-xl">
         <input
           className="outline-none max-sm:max-w-[120px]"
           placeholder="Search..."
@@ -66,7 +66,7 @@ const Navbar = () => {
       <div className="relative flex gap-3 items-center">
         <Link
           href="/bag"
-          className="flex items-center gap-3 border rounded-lg px-2 py-1 hover:bg-black hover:text-white max-md:hidden"
+          className="flex items-center gap-3 border rounded-xl px-2 py-1 hover:bg-black hover:text-white max-md:hidden"
         >
           <ShoppingBag />
           <p className="text-base-bold">Bag ({cart.cartItems.length})</p>
@@ -78,7 +78,7 @@ const Navbar = () => {
         />
 
         {dropdownMenu && (
-          <div className="absolute top-12 right-5 flex flex-col gap-4 p-3 rounded-lg border bg-white text-base-bold lg:hidden">
+          <div className="absolute top-12 right-5 flex flex-col gap-4 p-3 rounded-xl border bg-white text-base-bold lg:hidden">
             <Link href="/" className="hover:text-red-1">
               Home
             </Link>
@@ -96,7 +96,7 @@ const Navbar = () => {
             </Link>
             <Link
               href="/cart"
-              className="flex items-center gap-3 border rounded-lg px-2 py-1 hover:bg-black hover:text-white"
+              className="flex items-center gap-3 border rounded-xl px-2 py-1 hover:bg-black hover:text-white"
             >
               <ShoppingBag />
               <p className="text-base-bold">Cart ({cart.cartItems.length})</p>

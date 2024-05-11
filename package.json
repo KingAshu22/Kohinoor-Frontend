@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.7",
+    "@clerk/nextjs": "^5.0.8",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-slot": "^1.0.2",
     "@stripe/stripe-js": "^3.0.6",
     "axios": "^1.6.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.341.0",
     "mongoose": "^8.2.0",
     "next": "14.1.0",
@@ -24,7 +28,9 @@
     "shortid": "^2.2.16",
     "slick-carousel": "^1.8.1",
     "stripe": "^14.18.0",
+    "tailwind-merge": "^2.3.0",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss-animate": "^1.0.7",
     "venom-bot": "^5.1.0",
     "whatsapp-web.js": "^1.23.0",
     "zustand": "^4.5.1"

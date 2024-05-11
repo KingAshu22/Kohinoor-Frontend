@@ -137,7 +137,7 @@ export default function PayButton({
     <div>
       {!isPaymentSuccess && (
         <button
-          className="border rounded-lg text-body-bold text-white bg-black py-3 w-full hover:bg-white hover:text-black"
+          className="border rounded-xl text-body-bold text-white bg-black py-3 w-full hover:bg-white hover:text-black"
           onClick={() => makePayment()}
         >
           Pay now

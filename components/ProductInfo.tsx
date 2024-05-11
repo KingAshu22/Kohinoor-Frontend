@@ -49,7 +49,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             {productInfo.colors.map((color, index) => (
               <p
                 key={index}
-                className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
+                className={`border border-black px-2 py-1 rounded-xl cursor-pointer ${
                   selectedColor === color && "bg-black text-white"
                 }`}
                 onClick={() => setSelectedColor(color)}
@@ -68,7 +68,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             {productInfo.sizes.map((size, index) => (
               <p
                 key={index}
-                className={`border border-black px-2 py-1 rounded-lg cursor-pointer ${
+                className={`border border-black px-2 py-1 rounded-xl cursor-pointer ${
                   selectedSize === size && "bg-black text-white"
                 }`}
                 onClick={() => setSelectedSize(size)}
@@ -96,7 +96,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
       </div>
 
       <button
-        className="outline text-base-bold py-3 rounded-lg hover:bg-black hover:text-white"
+        className="outline text-base-bold py-3 rounded-xl hover:bg-black hover:text-white"
         onClick={() => {
           cart.addItem({
             item: productInfo,
