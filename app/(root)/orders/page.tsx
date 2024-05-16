@@ -1,10 +1,10 @@
 import { getOrders } from "@/lib/actions/actions";
 
-import { useAuth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 
 const Orders = async () => {
-  const { userId } = useAuth();
+  const { userId } = auth();
   const orders = await getOrders(userId as string);
   interface OrderType {
     _id: string;
