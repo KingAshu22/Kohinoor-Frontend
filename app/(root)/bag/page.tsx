@@ -210,7 +210,8 @@ const Cart = () => {
             </div>
             <div className="flex justify-between">
               <span>
-                Note: Recipient covers delivery charges upon receiving shipment.
+                Note: Recipient covers delivery charges upon receiving shipment
+                or ₹25/KG would be charged for shipping of Products
               </span>
             </div>
             <hr />
