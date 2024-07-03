@@ -28,7 +28,6 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
         />
         <div>
           <p className="text-base-bold">{product.title}</p>
-          <p className="text-small-medium text-grey-2">{product.category}</p>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-sm">
@@ -50,7 +49,9 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             className="hover:text-red-1 cursor-pointer"
             onClick={() => quantity > 10 && setQuantity(quantity - 2)}
           />
-          <p className="text-body-bold">{quantity} Gross</p>
+          <p className="text-body-bold">
+            {quantity} {product.category === "Gross" && "Gross"}
+          </p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"
             onClick={() => setQuantity(quantity + 2)}
