@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MinusCircle, PlusCircle, Trash } from "lucide-react";
@@ -32,12 +31,30 @@ const Cart = () => {
     let discount = 0;
     let discountPercent = 0;
 
-    if (totalRounded > 100000) {
+    if (totalRounded > 90000) {
       discountPercent = 18;
       discount = (totalRounded * 18) / 100;
-    } else if (totalRounded > 50000) {
+    } else if (totalRounded > 80000) {
+      discountPercent = 17;
+      discount = (totalRounded * 17) / 100;
+    } else if (totalRounded > 70000) {
+      discountPercent = 16;
+      discount = (totalRounded * 16) / 100;
+    } else if (totalRounded > 60000) {
       discountPercent = 15;
       discount = (totalRounded * 15) / 100;
+    } else if (totalRounded > 50000) {
+      discountPercent = 14;
+      discount = (totalRounded * 14) / 100;
+    } else if (totalRounded > 40000) {
+      discountPercent = 13;
+      discount = (totalRounded * 13) / 100;
+    } else if (totalRounded > 30000) {
+      discountPercent = 12;
+      discount = (totalRounded * 12) / 100;
+    } else if (totalRounded > 20000) {
+      discountPercent = 11;
+      discount = (totalRounded * 11) / 100;
     } else if (totalRounded > 10000) {
       discountPercent = 10;
       discount = (totalRounded * 10) / 100;
