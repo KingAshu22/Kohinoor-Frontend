@@ -3,30 +3,24 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import useCart from "@/lib/hooks/useCart";
-import {
-  Heart,
-  Home,
-  ShoppingBag,
-  Box,
-  Search,
-  CircleUserRound,
-} from "lucide-react";
+import { Heart, Home, ShoppingBag, Flag } from "lucide-react";
 import { useState } from "react";
-import { UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const cart = useCart();
-  const { user } = useUser();
 
   const [query, setQuery] = useState("");
 
   const navItems = [
     { path: "/", icon: <Home />, label: "Home" },
-    { path: "/wishlist", icon: <Heart />, label: "Wishlist" },
-    { path: "/orders", icon: <Box />, label: "Orders" },
+    {
+      path: "/collections/662c976dd926b5475c3a4430",
+      icon: <Flag className="text-red" />,
+      label: "Gold Collection",
+    },
     {
       path: "/bag",
       icon: (
@@ -91,15 +85,6 @@ export default function BottomNav() {
               <Search className="text-white cursor-pointer h-4 w-4 hover:text-red-1" />
             </button>
           </div> */}
-          <div className="flex items-center">
-            {user ? (
-              <UserButton afterSignOutUrl="/sign-in" />
-            ) : (
-              <Link className="ml-10" href="/sign-in">
-                <CircleUserRound />
-              </Link>
-            )}
-          </div>
         </div>
       </header>
     </>

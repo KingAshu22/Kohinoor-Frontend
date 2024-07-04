@@ -32,14 +32,11 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
         <div className="flex justify-between items-center">
           <p className="text-sm">
             <span className="font-bold text-red-600 text-lg">
-              ₹{product.price}
+              ₹{product.price}{" "}
             </span>
-            /Gross
+            {(product.category === "Gross" && "/Gross") ||
+              (product.category === "Individual" && "/Piece")}
           </p>
-          <HeartFavorite
-            product={product}
-            updateSignedInUser={updateSignedInUser}
-          />
         </div>
       </Link>
       <div className="flex flex-col gap-2 mb-2">
@@ -50,7 +47,9 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             onClick={() => quantity > 10 && setQuantity(quantity - 2)}
           />
           <p className="text-body-bold">
-            {quantity} {product.category === "Gross" && "Gross"}
+            {quantity}{" "}
+            {(product.category === "Gross" && "Gross") ||
+              (product.category === "Individual" && "Piece")}
           </p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"

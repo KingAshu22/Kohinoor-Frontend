@@ -10,18 +10,15 @@ import useCart from "@/lib/hooks/useCart";
 
 const Cart = () => {
   const router = useRouter();
-  const { user } = useUser();
 
+  const [name, setName] = useState("");
+  const [mobile, setMobile] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [state, setState] = useState("");
   const [discount, setDiscount] = useState(0);
   const [discountPercent, setDiscountPercent] = useState(0);
-
-  const clerkId = user?.id;
-  const name = user?.fullName;
-  const mobile = user?.phoneNumbers[0].phoneNumber;
 
   const cart = useCart();
 
@@ -154,6 +151,22 @@ const Cart = () => {
           <div className="w-1/3 max-lg:w-full flex flex-col gap-8 bg-grey-1 rounded-xl px-4 py-5">
             <div className="pb-4">
               <p className="text-heading4-bold">Address</p>
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(ev) => setName(ev.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <input
+                type="number"
+                placeholder="Contact Number"
+                value={mobile}
+                onChange={(ev) => setMobile(ev.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-md py-2 px-3 mt-2 focus:outline-none focus:ring focus:border-blue-300"
+              />
               <input
                 type="text"
                 placeholder="Street Address"

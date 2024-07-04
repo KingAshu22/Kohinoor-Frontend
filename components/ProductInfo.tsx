@@ -21,21 +21,22 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
     <div className="max-w-[400px] flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <p className="text-heading3-bold">{productInfo.title}</p>
-        <HeartFavorite product={productInfo} />
-      </div>
-
-      <div className="flex gap-2">
-        <p className="text-base-medium text-grey-2">Category:</p>
-        <p className="text-base-bold">{productInfo.category}</p>
       </div>
 
       <p className="text-heading3-bold">
-        ₹ {productInfo.price} <span className="text-base-medium">/ Gross</span>
+        ₹ {productInfo.price}{" "}
+        <span className="text-base-medium">
+          /{" "}
+          {(productInfo.category === "Gross" && "Gross") ||
+            (productInfo.category === "Individual" && "Piece")}
+        </span>
       </p>
 
-      <div className="flex flex-col gap-2">
-        <p className="text-small-medium">1 Gross = 12 Dozens</p>
-      </div>
+      {productInfo.category === "Gross" && (
+        <div className="flex flex-col gap-2">
+          <p className="text-small-medium">1 Gross = 12 Dozens</p>
+        </div>
+      )}
 
       <div className="flex flex-col gap-2">
         <p className="text-base-medium text-grey-2">Description:</p>
@@ -87,7 +88,11 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
             className="hover:text-red-1 cursor-pointer"
             onClick={() => quantity > 10 && setQuantity(quantity - 2)}
           />
-          <p className="text-body-bold">{quantity} Gross</p>
+          <p className="text-body-bold">
+            {quantity}{" "}
+            {(productInfo.category === "Gross" && "Gross") ||
+              (productInfo.category === "Individual" && "Piece")}
+          </p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"
             onClick={() => setQuantity(quantity + 2)}

@@ -1,7 +1,6 @@
 "use client";
 
 import useCart from "@/lib/hooks/useCart";
-import { UserButton, useUser } from "@clerk/nextjs";
 import { CircleUserRound, Menu, Search, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +10,6 @@ import { useState } from "react";
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useUser();
   const cart = useCart();
 
   const [dropdownMenu, setDropdownMenu] = useState(false);
@@ -31,20 +29,12 @@ const Navbar = () => {
           Home
         </Link>
         <Link
-          href={user ? "/wishlist" : "/sign-in"}
+          href={"/collections/662c976dd926b5475c3a4430"}
           className={`hover:text-red-1 ${
-            pathname === "/wishlist" && "text-red-1"
+            pathname === "/collections/662c976dd926b5475c3a4430" && "text-red-1"
           }`}
         >
-          Wishlist
-        </Link>
-        <Link
-          href={user ? "/orders" : "/sign-in"}
-          className={`hover:text-red-1 ${
-            pathname === "/orders" && "text-red-1"
-          }`}
-        >
-          Orders
+          Gold Collection
         </Link>
       </div>
 
@@ -83,16 +73,10 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              href={user ? "/wishlist" : "/sign-in"}
+              href={"/collections/662c976dd926b5475c3a4430"}
               className="hover:text-red-1"
             >
-              Wishlist
-            </Link>
-            <Link
-              href={user ? "/orders" : "/sign-in"}
-              className="hover:text-red-1"
-            >
-              Orders
+              Gold Collection
             </Link>
             <Link
               href="/cart"
@@ -102,14 +86,6 @@ const Navbar = () => {
               <p className="text-base-bold">Cart ({cart.cartItems.length})</p>
             </Link>
           </div>
-        )}
-
-        {user ? (
-          <UserButton afterSignOutUrl="/sign-in" />
-        ) : (
-          <Link href="/sign-in">
-            <CircleUserRound />
-          </Link>
         )}
       </div>
     </div>
