@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import HeartFavorite from "./HeartFavorite";
 import { MinusCircle, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import useCart from "@/lib/hooks/useCart";
@@ -16,16 +15,11 @@ interface ProductType {
   category: "Gross" | "Individual";
 }
 
-interface UserType {
-  // Define UserType properties here if needed
-}
-
 interface ProductCardProps {
   product: ProductType;
-  updateSignedInUser?: (updatedUser: UserType) => void;
 }
 
-const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const initialQuantity = product.category === "Gross" ? 10 : 1;
   const [quantity, setQuantity] = useState<number>(initialQuantity);
   const cart = useCart();
@@ -47,7 +41,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
       <Link href={`/products/${product._id}`}>
         <Image
           src={product.media[0]}
-          alt={product.title}
+          alt="product"
           width={220}
           height={300}
           className="h-[250px] rounded-xl object-cover"
