@@ -5,6 +5,14 @@ import ProductCard from "@/components/ProductCard";
 import ProductInfo from "@/components/ProductInfo";
 import { getProductDetails, getRelatedProducts } from "@/lib/actions/actions";
 
+interface ProductType {
+  _id: string;
+  media: string[];
+  title: string;
+  price: number;
+  category: "Gross" | "Individual";
+}
+
 const ProductDetails = async ({
   params,
 }: {

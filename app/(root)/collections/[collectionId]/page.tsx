@@ -3,6 +3,14 @@ import { getCollectionDetails } from "@/lib/actions/actions";
 import Image from "next/image";
 import React from "react";
 
+interface ProductType {
+  _id: string;
+  media: string[];
+  title: string;
+  price: number;
+  category: "Gross" | "Individual";
+}
+
 const CollectionDetails = async ({
   params,
 }: {

@@ -6,6 +6,14 @@ import { getProductDetails } from "@/lib/actions/actions";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
+interface ProductType {
+  _id: string;
+  media: string[];
+  title: string;
+  price: number;
+  category: "Gross" | "Individual";
+}
+
 const Wishlist = () => {
   const { user } = useUser();
 
