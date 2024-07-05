@@ -62,10 +62,6 @@ const Wishlist = () => {
     }
   }, [signedInUser]);
 
-  const updateSignedInUser = (updatedUser: UserType) => {
-    setSignedInUser(updatedUser);
-  };
-
   return loading ? (
     <Loader />
   ) : (
@@ -75,11 +71,7 @@ const Wishlist = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16 justify-center">
         {wishlist.map((product) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-            updateSignedInUser={updateSignedInUser}
-          />
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
     </div>
