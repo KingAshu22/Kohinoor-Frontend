@@ -5,6 +5,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 interface CartItem {
   item: ProductType;
   quantity: number;
+  category: string;
   color?: string; // ? means optional
   size?: string; // ? means optional
 }
@@ -23,7 +24,7 @@ const useCart = create(
     (set, get) => ({
       cartItems: [],
       addItem: (data: CartItem) => {
-        const { item, quantity, color, size } = data;
+        const { item, quantity, category, color, size } = data;
         const currentItems = get().cartItems; // all the items already in cart
         const isExisting = currentItems.find(
           (cartItem) => cartItem.item._id === item._id
@@ -33,7 +34,12 @@ const useCart = create(
           return toast("Item already in cart");
         }
 
-        set({ cartItems: [...currentItems, { item, quantity, color, size }] });
+        set({
+          cartItems: [
+            ...currentItems,
+            { item, quantity, category, color, size },
+          ],
+        });
         toast.success("Item added to cart", { icon: "🛒" });
       },
       removeItem: (idToRemove: String) => {
@@ -46,7 +52,13 @@ const useCart = create(
       increaseQuantity: (idToIncrease: String) => {
         const newCartItems = get().cartItems.map((cartItem) =>
           cartItem.item._id === idToIncrease
-            ? { ...cartItem, quantity: cartItem.quantity + 2 }
+            ? {
+                ...cartItem,
+                quantity:
+                  cartItem.category === "Gross"
+                    ? cartItem.quantity + 2
+                    : cartItem.quantity + 1,
+              }
             : cartItem
         );
         set({ cartItems: newCartItems });
@@ -56,12 +68,21 @@ const useCart = create(
         const currentItems = get().cartItems;
         const updatedItems = currentItems.map((cartItem) => {
           if (cartItem.item._id === idToDecrease) {
-            if (cartItem.quantity === 10) {
+            if (
+              (cartItem.category === "Gross" && cartItem.quantity === 10) ||
+              (cartItem.category === "Individual" && cartItem.quantity === 1)
+            ) {
               // Remove the item from the cart if quantity is 10
               return null;
             } else {
               // Decrease the quantity by 2
-              return { ...cartItem, quantity: cartItem.quantity - 2 };
+              return {
+                ...cartItem,
+                quantity:
+                  cartItem.category === "Gross"
+                    ? cartItem.quantity - 2
+                    : cartItem.quantity - 1,
+              };
             }
           }
           return cartItem;

@@ -13,7 +13,8 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
   const [selectedSize, setSelectedSize] = useState<string>(
     productInfo.sizes[0]
   );
-  const [quantity, setQuantity] = useState<number>(10);
+  const initialQuantity = productInfo.category === "Gross" ? 10 : 1;
+  const [quantity, setQuantity] = useState<number>(initialQuantity);
 
   const cart = useCart();
 
@@ -28,7 +29,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
         <span className="text-base-medium">
           /{" "}
           {(productInfo.category === "Gross" && "Gross") ||
-            (productInfo.category === "Individual" && "Piece")}
+            (productInfo.category === "Individual" && "Box")}
         </span>
       </p>
 
@@ -84,19 +85,31 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
       <div className="flex flex-col gap-2">
         <p className="text-base-medium text-grey-2">Quantity:</p>
         <div className="flex gap-4 items-center">
-          <MinusCircle
-            className="hover:text-red-1 cursor-pointer"
-            onClick={() => quantity > 10 && setQuantity(quantity - 2)}
-          />
-          <p className="text-body-bold">
-            {quantity}{" "}
-            {(productInfo.category === "Gross" && "Gross") ||
-              (productInfo.category === "Individual" && "Piece")}
-          </p>
-          <PlusCircle
-            className="hover:text-red-1 cursor-pointer"
-            onClick={() => setQuantity(quantity + 2)}
-          />
+          {productInfo.category === "Gross" ? (
+            <>
+              <MinusCircle
+                className="hover:text-red-1 cursor-pointer"
+                onClick={() => quantity > 10 && setQuantity(quantity - 2)}
+              />
+              <p className="text-body-bold">{quantity} Gross</p>
+              <PlusCircle
+                className="hover:text-red-1 cursor-pointer"
+                onClick={() => setQuantity(quantity + 2)}
+              />
+            </>
+          ) : (
+            <>
+              <MinusCircle
+                className="hover:text-red-1 cursor-pointer"
+                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+              />
+              <p className="text-body-bold">{quantity} Box</p>
+              <PlusCircle
+                className="hover:text-red-1 cursor-pointer"
+                onClick={() => setQuantity(quantity + 1)}
+              />
+            </>
+          )}
         </div>
       </div>
 
@@ -106,6 +119,7 @@ const ProductInfo = ({ productInfo }: { productInfo: ProductType }) => {
           cart.addItem({
             item: productInfo,
             quantity,
+            category: productInfo.category,
             color: selectedColor,
             size: selectedSize,
           });

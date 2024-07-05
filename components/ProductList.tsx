@@ -1,6 +1,14 @@
 import { getProducts } from "@/lib/actions/actions";
 import ProductCard from "./ProductCard";
 
+interface ProductType {
+  _id: string;
+  media: string[];
+  title: string;
+  price: number;
+  category: "Gross" | "Individual";
+}
+
 const ProductList = async () => {
   const products = await getProducts();
 

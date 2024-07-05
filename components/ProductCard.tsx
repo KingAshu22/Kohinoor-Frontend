@@ -8,20 +8,46 @@ import { useState } from "react";
 import useCart from "@/lib/hooks/useCart";
 import { getProductDetails } from "@/lib/actions/actions";
 
+interface ProductType {
+  _id: string;
+  media: string[];
+  title: string;
+  price: number;
+  category: "Gross" | "Individual";
+}
+
+interface UserType {
+  // Define UserType properties here if needed
+}
+
 interface ProductCardProps {
   product: ProductType;
   updateSignedInUser?: (updatedUser: UserType) => void;
 }
 
 const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
-  const [quantity, setQuantity] = useState<number>(10);
+  const initialQuantity = product.category === "Gross" ? 10 : 1;
+  const [quantity, setQuantity] = useState<number>(initialQuantity);
   const cart = useCart();
+
+  const handleDecreaseQuantity = () => {
+    if (product.category === "Gross" && quantity > 10) {
+      setQuantity(quantity - 2);
+    } else if (product.category === "Individual" && quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleIncreaseQuantity = () => {
+    setQuantity(quantity + (product.category === "Gross" ? 2 : 1));
+  };
+
   return (
     <div className="w-[160px] flex flex-col gap-1">
       <Link href={`/products/${product._id}`}>
         <Image
           src={product.media[0]}
-          alt="product"
+          alt={product.title}
           width={220}
           height={300}
           className="h-[250px] rounded-xl object-cover"
@@ -34,8 +60,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
             <span className="font-bold text-red-600 text-lg">
               ₹{product.price}{" "}
             </span>
-            {(product.category === "Gross" && "/Gross") ||
-              (product.category === "Individual" && "/Piece")}
+            {product.category === "Gross" ? "/Gross" : "/Box"}
           </p>
         </div>
       </Link>
@@ -44,16 +69,14 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
         <div className="flex gap-4 items-center">
           <MinusCircle
             className="hover:text-red-1 cursor-pointer"
-            onClick={() => quantity > 10 && setQuantity(quantity - 2)}
+            onClick={handleDecreaseQuantity}
           />
           <p className="text-body-bold">
-            {quantity}{" "}
-            {(product.category === "Gross" && "Gross") ||
-              (product.category === "Individual" && "Piece")}
+            {quantity} {product.category === "Gross" ? "Gross" : "Box"}
           </p>
           <PlusCircle
             className="hover:text-red-1 cursor-pointer"
-            onClick={() => setQuantity(quantity + 2)}
+            onClick={handleIncreaseQuantity}
           />
         </div>
       </div>
@@ -63,6 +86,7 @@ const ProductCard = ({ product, updateSignedInUser }: ProductCardProps) => {
           cart.addItem({
             item: await getProductDetails(product._id),
             quantity,
+            category: product.category,
             color: "",
             size: "",
           });
